@@ -776,26 +776,30 @@ def process_message(dict_data):
         
     return output
 
-async def socket_server(websocket):
+async def socket_server(websocket, path):
     global websocket_client
     websocket_client = websocket
     try:
-        async for message in websocket:
-            message_dict = json.loads(message)
+        if path == "/chat-of-avabur":
+            async for message in websocket:
+                message_dict = json.loads(message)
 
-            if type(message_dict) is not list:
-                continue
-                
-            message_string = process_message(message_dict[0])
-            if message_string:
-                plain_message_string = strip_html(message_string)
-                await forward_to_discord(plain_message_string)
+                if type(message_dict) is not list:
+                    continue
+                    
+                message_string = process_message(message_dict[0])
+                if message_string:
+                    plain_message_string = strip_html(message_string)
+                    await forward_to_discord(plain_message_string)
+        else:
+            print(f"Invalid path: {path}")
+            websocket.close()
     except websockets.exceptions.ConnectionClosedError as e:
         print(f"Connection closed with error: {e}")
 
 async def main():
     # Start WebSocket server
-    websocket_server = await websockets.serve(socket_server, "0.0.0.0", 5000, path="/chat-of-avabur")
+    websocket_server = await websockets.serve(socket_server, "0.0.0.0", 5000)
     print("WebSocket server started at ws://0.0.0.0:5000")
 
     # Start Discord bot
