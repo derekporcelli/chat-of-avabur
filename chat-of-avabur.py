@@ -795,7 +795,7 @@ async def socket_server(websocket):
 
 async def main():
     # Start WebSocket server
-    websocket_server = await websockets.serve(socket_server, "0.0.0.0", 5000)
+    websocket_server = await websockets.serve(socket_server, "0.0.0.0", 5000, path="/chat-of-avabur")
     print("WebSocket server started at ws://0.0.0.0:5000")
 
     # Start Discord bot
