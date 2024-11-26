@@ -750,7 +750,7 @@ def process_message(dict_data):
     elif message_type == "emote":
         channel_id = default_channel
         try:
-            channel_id = id_to_chan[f'{dict_data['c_id']}']
+            channel_id = id_to_chan[f"{dict_data['c_id']}"]
         except KeyError:
             if 'c_id' in dict_data:
                 channel_id = dict_data['c_id']
