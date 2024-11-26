@@ -3,7 +3,7 @@
 // @namespace    https://github.com/derekporcelli/
 // @version      1.0.2
 // @description  Two way Discord Chat integration!
-// @author       illecrop
+// @author       illecrop <illecrop@proton.me>
 // @match        https://*.avabur.com/game*
 // @icon         https://github.com/derekporcelli/chat-of-avabur/blob/8c5c2be0d79460032631fc23c186051a09ac3d96/img/tampermonkey-script-icon.png?raw=true
 // @grant        none

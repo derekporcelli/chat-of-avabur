@@ -1,5 +1,6 @@
 # Chat of Avabur
 
+## About
 This is an open source project for the game **Relics of Avabur**. The goal of this project is to achieve full duplex chat integration with Discord using a Discord App or Bot. Works nicely with [Notifications of Avabur](https://github.com/davidmcclelland/notifications-of-avabur/).
 
 ## Installation
@@ -19,10 +20,11 @@ Then, [install the script](https://github.com/derekporcelli/chat-of-avabur/raw/m
 ### Self Hosted
 
 First, clone the repository
+
 NOTE: To ensure proper WebSocket connection, start the server _before_ loading **Relics of Avabur**
 
 #### Discord Bot
-1. Visit (https://discord.com/developers/applications)[Discord Developer Portal]
+1. Visit [Discord Developer Portal](https://discord.com/developers/applications)
 2. Click `New Application`
 3. Give it a name, agree to Discord ToS, and click `Create`
 4. Click `Bot` on the left sidebar
@@ -36,6 +38,7 @@ NOTE: To ensure proper WebSocket connection, start the server _before_ loading *
 
 #### TamperMonkey Script
 See instructions in Normal Installation for TamperMonkey Script
+
 NOTE: After installation or updates, you must edit the script to use custom WebSocket sockets
 1. Open the script in TamperMonkey
 2. Find the comments that start with `[SELF HOSTING]` and follow the instructions provided
