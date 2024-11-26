@@ -717,7 +717,7 @@ def process_message(dict_data):
         output = f"[{dict_data['ts']}] {dict_data['m']}"
     elif message_type == "mychans":
         for chan in dict_data['channels']:
-            id_to_chan[f'{chan['id']}'] = chan['name']
+            id_to_chan[f"{chan['id']}"] = chan['name']
             chan_to_id[chan['name']] = f'{chan['id']}'
     elif message_type == "pmfrom":
         output = f"[{dict_data['ts']}] Whisper from {dict_data['u']}: {dict_data['m']}"
