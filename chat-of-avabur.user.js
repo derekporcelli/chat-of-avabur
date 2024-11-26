@@ -1,12 +1,15 @@
 // ==UserScript==
 // @name         Chat of Avabur
-// @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @namespace    https://github.com/derekporcelli/
+// @version      1.0.1
 // @description  Two way Discord Chat integration!
 // @author       illecrop
-// @match        https://avabur.com/game
+// @match        https://*.avabur.com/game*
 // @icon         https://github.com/derekporcelli/chat-of-avabur/blob/8c5c2be0d79460032631fc23c186051a09ac3d96/img/tampermonkey-script-icon.png?raw=true
 // @grant        none
+// @updateURL    https://raw.githubusercontent.com/derekporcelli/chat-of-avabur/main/chat-of-avabur.user.js
+// @downloadURL  https://raw.githubusercontent.com/derekporcelli/chat-of-avabur/main/chat-of-avabur.user.js
+// @run-at       document-start
 // ==/UserScript==
 
 (function() {
