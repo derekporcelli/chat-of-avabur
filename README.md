@@ -11,4 +11,5 @@ https://discord.com/oauth2/authorize?client_id=1309797708432932865&permissions=3
 
 ### TamperMonkey Script
 If you haven't, install the TamperMonkey Extension ([Chrome](https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en)) ([Firefox](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/))
+
 Then, [install the script](https://github.com/derekporcelli/chat-of-avabur/main/raw/chat-of-avabur.user.js)
