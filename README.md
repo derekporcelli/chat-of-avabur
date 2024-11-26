@@ -1,6 +1,6 @@
 # Chat of Avabur
 
-This is an open source project for the game **Relics of Avabur**. The goal of this project is to achieve full duplex chat integration with Discord using a Discord App or bot.
+This is an open source project for the game **Relics of Avabur**. The goal of this project is to achieve full duplex chat integration with Discord using a Discord App or bot. Works nicely with [Notifications of Avabur](https://github.com/davidmcclelland/notifications-of-avabur/).
 
 ## Installation
 ### Discord Bot
