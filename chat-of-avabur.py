@@ -798,8 +798,15 @@ async def socket_server(websocket, path):
         print(f"Connection closed with error: {e}")
 
 async def main():
-    # Start WebSocket server
+
+    # [SELF HOSTING] 1/4. Uncomment the line below
+    #websocket_server = await websockets.serve(socket_server, "localhost", 8765)
+    # [SELF HOSTING] 2/4. Uncomment the line below
+    #print("WebSocket server started at ws://localhost:8765")
+
+    # [SELF HOSTING] 3/4. Comment out the line below
     websocket_server = await websockets.serve(socket_server, "0.0.0.0", 443)
+    # [SELF HOSTING] 4/4. Comment out the line below
     print("WebSocket server started at ws://0.0.0.0:443")
 
     # Start Discord bot

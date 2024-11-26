@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Chat of Avabur
 // @namespace    https://github.com/derekporcelli/
-// @version      1.0.1
+// @version      1.0.2
 // @description  Two way Discord Chat integration!
 // @author       illecrop
 // @match        https://*.avabur.com/game*
@@ -15,6 +15,9 @@
 (function() {
     'use strict';
 
+    // [SELF HOSTING] 1/2. Uncomment the line below
+    //const pythonWebSocketUrl = "ws://localhost:8765";
+    // [SELF HOSTING] 2/2. Comment out the line below
     const pythonWebSocketUrl = "wss://derekporcelli.com/chat-of-avabur";
 
     const pythonSocket = new WebSocket(pythonWebSocketUrl);
