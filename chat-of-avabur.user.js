@@ -5,17 +5,15 @@
 // @description  Two way Discord Chat integration!
 // @author       illecrop
 // @match        https://avabur.com/game
-// @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
+// @icon         https://github.com/derekporcelli/chat-of-avabur/blob/8c5c2be0d79460032631fc23c186051a09ac3d96/img/tampermonkey-script-icon.png?raw=true
 // @grant        none
 // ==/UserScript==
 
 (function() {
     'use strict';
 
-    // Replace with your Python WebSocket server URL
     const pythonWebSocketUrl = "wss://derekporcelli.com/chat-of-avabur";
 
-    // Establish WebSocket connection with Python server
     const pythonSocket = new WebSocket(pythonWebSocketUrl);
 
     pythonSocket.onopen = () => {
@@ -24,7 +22,6 @@
 
     pythonSocket.onmessage = (event) => {
 
-        // Forward message to the browser's WebSocket connection
         if (browserSocket && browserSocket.readyState === 1) {
             browserSocket.send(event.data);
         } else {
@@ -40,34 +37,28 @@
         console.log("[Tampermonkey] Disconnected from Python WebSocket server.");
     };
 
-    // Intercept browser's WebSocket
     const OriginalWebSocket = window.WebSocket;
     let browserSocket = null;
 
     window.WebSocket = function(url, protocols) {
         console.log("[Tampermonkey] Intercepting WebSocket connection:", url);
 
-        // Create the original WebSocket connection
         const socket = new OriginalWebSocket(url, protocols);
         browserSocket = socket;
 
-        // Hook the `send` method
         const originalSend = socket.send;
         socket.send = function(data) {
             console.log("[Tampermonkey] Intercepted send:", data);
 
-            // Forward the data to the Python WebSocket server
             if (pythonSocket.readyState === 1) {
                 pythonSocket.send(data);
             }
-            // Call the original send method
+
             return originalSend.call(socket, data);
         };
 
-        // Hook the `onmessage` handler
         socket.addEventListener("message", (event) => {
 
-            // Forward the message to the Python WebSocket server
             if (pythonSocket.readyState === 1) {
                 pythonSocket.send(event.data);
             } else {
@@ -78,6 +69,5 @@
         return socket;
     };
 
-    // Preserve the prototype chain
     window.WebSocket.prototype = OriginalWebSocket.prototype;
 })();
