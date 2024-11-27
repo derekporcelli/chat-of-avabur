@@ -38,12 +38,9 @@ NOTE: To ensure proper WebSocket connection, start the server _before_ loading *
 
 #### TamperMonkey Script
 See instructions in Normal Installation for TamperMonkey Script
-
-NOTE: After installation or updates, you must edit the script to use custom WebSocket sockets
-1. Open the script in TamperMonkey
-2. Find the comments that start with `[SELF HOSTING]` and follow the instructions provided
-3. Save the file
-4. Reload **Relics of Avabur**
+1. Log in to **Relics of Avabur**
+2. Click `Account Management > CoA`
+3. Check `Self hosting`
 
 #### Server
 Ensure you have `python3` and `pip` installed
@@ -55,10 +52,7 @@ cd ./chat-of-avabur
 ```sh
 pip install -r requirements.txt
 ```
-3. Open `chat-of-avabur.py` in a text editor
-4. Find the comments that start with `[SELF HOSTING]` and follow the instructions provided
-5. Save the file
-6. Start the server
+3. Start the server
 ```sh
-python3 ./chat-of-avabur.py
+python3 ./chat-of-avabur.py --self-host
 ```
