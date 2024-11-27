@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Chat of Avabur
 // @namespace    https://github.com/derekporcelli/
-// @version      1.1.0
+// @version      1.1.1
 // @description  Two way Discord Chat integration!
 // @author       illecrop <illecrop@proton.me>
 // @match        https://*.avabur.com/game*
@@ -121,20 +121,17 @@ const loadUserSettings = () => {
         const storedSettings = localStorage.getItem(SETTINGS_KEY);
         if (storedSettings) {
             const parsedSettings = JSON.parse(storedSettings);
-            util.log(JSON.stringify(parsedSettings));
             return parsedSettings;
         }
     } catch (error) {
-        util.log(`Error loading settings: ${error.message}`);
+        util.error(`Error loading settings: ${error.message}`);
     }
-
-    util.log(JSON.stringify(DEFAULT_USER_SETTINGS)); // Log default settings if none exist or error occurs
     return DEFAULT_USER_SETTINGS;
 };
 
 const saveUserSettings = (settings) => {
     if (typeof settings !== 'object') {
-        util.log("Error: Settings must be an object.");
+        util.error("Error: Settings must be an object.");
         return;
     }
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
@@ -143,6 +140,8 @@ const saveUserSettings = (settings) => {
 
 const initHTML = ($, userSettings) => {
     GM_addStyle(COA_STYLES);
+
+    util.log('Initializing HTML');
 
     var accountSettingsWrapper = $('#accountSettingsWrapper');
     var settingsLinksWrapper = $('#settingsLinksWrapper');
@@ -153,7 +152,6 @@ const initHTML = ($, userSettings) => {
     settingsLinksWrapper.append(coaSettingsButton);
 
     coaSettingsButton.on('click', function() {
-        util.log('Opening CoA settings');
         coaSettingsPage.css('display', 'block').siblings().css('display', 'none');
         settingsLinksWrapper.css('display', 'block');
     });
@@ -179,7 +177,6 @@ const initHTML = ($, userSettings) => {
         selfHostingBoolean.prop('checked', true);
         saveUserSettings(userSettings);
         coaSettingsSavedLabel.css('display', 'block').fadeOut(2000);
-        util.log('WebSocket URL:', this.value);
     });
 
     if (userSettings.selfHostingBoolean) {
@@ -195,8 +192,8 @@ const initHTML = ($, userSettings) => {
 const main = () => {
     var userSettings = loadUserSettings();
     saveUserSettings(userSettings);
-    //const pythonSocket = initPythonWebSocket(userSettings.pythonWebSocketUrl, window.WebSocket);
-    //hijackWebSocket(pythonSocket);
+    const pythonSocket = initPythonWebSocket(userSettings.pythonWebSocketUrl, window.WebSocket);
+    hijackWebSocket(pythonSocket);
     initHTML(jQuery, userSettings);
 };
 
