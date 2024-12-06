@@ -1,75 +1,49 @@
 // ==UserScript==
 // @name         Chat of Avabur
 // @namespace    https://github.com/derekporcelli/
-// @version      1.1.1
+// @version      1.1.2
 // @description  Two way Discord Chat integration!
 // @author       illecrop <illecrop@proton.me>
 // @match        https://*.avabur.com/game*
 // @icon         https://github.com/derekporcelli/chat-of-avabur/blob/8c5c2be0d79460032631fc23c186051a09ac3d96/img/tampermonkey-script-icon.png?raw=true
-// @grant        GM_addStyle
+// @grant        none
 // @updateURL    https://raw.githubusercontent.com/derekporcelli/chat-of-avabur/main/chat-of-avabur.user.js
 // @downloadURL  https://raw.githubusercontent.com/derekporcelli/chat-of-avabur/main/chat-of-avabur.user.js
-// @run-at       document-end
+// @run-at       document-start
 // ==/UserScript==
 
 'use strict';
 
 const SETTINGS_KEY = 'CoASettings';
 
-const COA_STYLES = `
-.row.text-center > div {
-display: inline-block;
-float: none;
-}
-#CoASettings input {
-margin-right: 10px;
-}
-#CoASettings textarea {
-width: 50%;
-height: 80px;
-}
-#CoASettings hr {
-margin-top: 10px;
-margin-bottom: 10px;
-}
-#notificationLogItems {
-margin-top: 10px;
-}
-input[type=time] {
-border: 1px solid var(--border-color);
-background-color: var(--input-background-color);
-color: #fff;
-}
-`;
-
 const SETTINGS_DIALOG_HTML = `
 <div id="CoASettings" style="display: none; margin: 10px;">
-<div id="CoASettingsContentWrapper">
-    <div>
-        <h4 class="nobg">Hosting</h4>
-        <div class="row">
-            <div class="col-xs-3">
-                <label>
-                    <input id="selfHostingBoolean" type="checkbox" v-model="userSettings.selfHostingBoolean"> Self hosting
-                </label>
-            </div>
-            <div class="col-xs-3">
-                <label>WebSocket Server URL</label>
-                <input id="pythonWebSocketUrl" type="text" v-model="userSettings.pythonWebSocketUrl" value="ws://localhost:8765">
+    <div id="CoASettingsContentWrapper">
+        <div>
+            <h4 class="nobg" style="margin: 0; padding: 0;">Hosting</h4>
+            <div class="row" style="margin: 0; padding: 0;">
+                <div class="col-xs-3" style="display: inline-block; float: none; margin: 0;">
+                    <label>
+                        <input id="selfHostingBoolean" type="checkbox" v-model="userSettings.selfHostingBoolean" style="margin-right: 10px;"> Self hosting
+                    </label>
+                </div>
+                <div class="col-xs-3" style="display: inline-block; float: none; margin: 0;">
+                    <label>WebSocket Server URL</label>
+                    <input id="pythonWebSocketUrl" type="text" v-model="userSettings.pythonWebSocketUrl" value="ws://localhost:8765" style="margin-right: 10px; border: 1px solid var(--border-color); background-color: var(--input-background-color); color: #fff;">
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="row" style="display: none;" id="CoASettingsSavedLabel">
-    <strong class="col-xs-12">
-        Settings have been saved
-    </strong>
-</div>
+    <div class="row" style="display: none; margin-top: 10px;" id="CoASettingsSavedLabel">
+        <strong class="col-xs-12">
+            Settings have been saved
+        </strong>
+    </div>
 </div>
 `;
 
 const SETTINGS_BUTTON_HTML = `
-<a id="coaPreferences"><button class="btn btn-primary">CoA</button></a>
+<a id="coaPreferences"><button class="btn btn-primary" style="margin: 5px; padding: 5px;">CoA</button></a>
 `;
 
 const DEFAULT_USER_SETTINGS = {
@@ -80,25 +54,34 @@ const DEFAULT_USER_SETTINGS = {
 const util = {
     log: (message) => console.log(`[${GM_info.script.name} (${GM_info.script.version})] ${message}`),
     error: (message) => console.error(`[${GM_info.script.name} (${GM_info.script.version})] ${message}`),
+    sleep: (ms) => new Promise(resolve => setTimeout(resolve, ms)),
 };
 
-const initPythonWebSocket = (uri, browserSocket) => {
+const initPythonWebSocket = (uri) => {
+    util.log(`Initializing Python WebSocket: ${uri}`);
     const ws = new WebSocket(uri);
     ws.addEventListener('open', () => util.log('WebSocket connection established'));
     ws.addEventListener('close', () => util.log('WebSocket connection closed'));
     ws.addEventListener('error', (error) => util.error(`WebSocket error: ${error}`));
-    ws.addEventListener('onmessage', (event) => {
-        browserSocket.send(event.data);
-    });
     return ws;
 }
 
+const setPythonSocketOnMessage = (pythonSocket, browserSocket) => {
+    util.log('Setting Python WebSocket onmessage event');
+    pythonSocket.onmessage = (event) => {
+        browserSocket.send(event.data);
+    };
+}
+
+let browserSocket = null;
+
 const hijackWebSocket = (pythonSocket) => {
+    util.log('Hijacking WebSocket');
+
     const OriginalWebSocket = window.WebSocket;
-    let browserSocket = null;
 
     window.WebSocket = function(url, protocols) {
-        util.log("Intercepting WebSocket connection:", url);
+        util.log(`Modifying WebSocket connection at ${url}`);
 
         const socket = new OriginalWebSocket(url, protocols);
         browserSocket = socket;
@@ -108,7 +91,10 @@ const hijackWebSocket = (pythonSocket) => {
             pythonSocket.send(data);
             return originalSend.call(socket, data);
         };
-        socket.addEventListener("message", (event) => {pythonSocket.send(event.data);});
+
+        socket.addEventListener("message", (event) => {
+            pythonSocket.send(event.data);
+        });
 
         return socket;
     };
@@ -117,6 +103,7 @@ const hijackWebSocket = (pythonSocket) => {
 }
 
 const loadUserSettings = () => {
+    util.log('Loading user settings');
     try {
         const storedSettings = localStorage.getItem(SETTINGS_KEY);
         if (storedSettings) {
@@ -139,7 +126,7 @@ const saveUserSettings = (settings) => {
 
 
 const initHTML = ($, userSettings) => {
-    GM_addStyle(COA_STYLES);
+    //GM_addStyle(COA_STYLES);
 
     util.log('Initializing HTML');
 
@@ -189,12 +176,33 @@ const initHTML = ($, userSettings) => {
     }
 }
 
-const main = () => {
+const main = async () => {
     var userSettings = loadUserSettings();
-    saveUserSettings(userSettings);
-    const pythonSocket = initPythonWebSocket(userSettings.pythonWebSocketUrl, window.WebSocket);
+
+    let pythonSocket = initPythonWebSocket(userSettings.pythonWebSocketUrl);
+    
     hijackWebSocket(pythonSocket);
-    initHTML(jQuery, userSettings);
+
+    while (browserSocket === null) {
+        await util.sleep(1000);
+    }
+
+    setPythonSocketOnMessage(pythonSocket, browserSocket);
+
+    saveUserSettings(userSettings);
+
+    const observerHTML = new MutationObserver((mutations, observer) => {
+        if (document.querySelector('#settingsLinksWrapper')) {
+            observer.disconnect();
+            initHTML(jQuery, userSettings);
+        }
+    });
+    if (document.body) {
+        observerHTML.observe(document.body, { childList: true, subtree: true });
+    } else {
+        util.error('Body not found');
+    }
+
 };
 
-main();
+await main();

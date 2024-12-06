@@ -777,24 +777,20 @@ def process_message(dict_data):
         
     return output
 
-async def socket_server(websocket, path):
+async def socket_server(websocket):
     global websocket_client
     websocket_client = websocket
     try:
-        if path == "/chat-of-avabur":
-            async for message in websocket:
-                message_dict = json.loads(message)
+        async for message in websocket:
+            message_dict = json.loads(message)
 
-                if type(message_dict) is not list:
-                    continue
-                    
-                message_string = process_message(message_dict[0])
-                if message_string:
-                    plain_message_string = strip_html(message_string)
-                    await forward_to_discord(plain_message_string)
-        else:
-            print(f"Invalid path: {path}")
-            websocket.close()
+            # if type(message_dict) is not list:
+            #     continue
+                
+            message_string = process_message(message_dict[0])
+            if message_string:
+                plain_message_string = strip_html(message_string)
+                await forward_to_discord(plain_message_string)
     except websockets.exceptions.ConnectionClosedError as e:
         print(f"Connection closed with error: {e}")
 
@@ -804,11 +800,11 @@ async def main():
     args = parser.parse_args()
 
     if args.self_host:
-        websocket_server = await websockets.serve(socket_server, "localhost", 8765)
+        websocket_server = await websockets.serve(socket_server, "127.0.0.1", 8765)
         print("WebSocket server started at ws://localhost:8765")
     else:
         websocket_server = await websockets.serve(socket_server, "0.0.0.0", 443)
-        print("WebSocket server started at ws://0.0.0.0:443")
+        print("WebSocket server started at wss://0.0.0.0:443")
 
     # Start Discord bot
     await bot.start(TOKEN)
