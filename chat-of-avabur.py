@@ -954,7 +954,11 @@ async def socket_server(websocket):
     try:
         async for message in websocket:
             message = json.loads(message)
-            message_dict = json.loads(message['roa_message'])
+            message_dict = None
+            if type(message['roa_message']) is list:
+                message_dict = message['roa_message']
+            else:
+                message_dict = json.loads(message['roa_message'])
             key = message['key']
 
             users = load_json_file("users.json")
