@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Chat of Avabur
 // @namespace    https://github.com/derekporcelli/
-// @version      1.1.2
+// @version      1.2.0
 // @description  Two way Discord Chat integration!
 // @author       illecrop <illecrop@proton.me>
 // @match        https://*.avabur.com/game*
@@ -19,7 +19,18 @@ const SETTINGS_KEY = 'CoASettings';
 const SETTINGS_DIALOG_HTML = `
 <div id="CoASettings" style="display: none; margin: 10px;">
     <div id="CoASettingsContentWrapper">
-        <div>
+        <!-- Navigation Bar for Submenus -->
+        <div style="margin-bottom: 10px; border-bottom: 1px solid var(--border-color);">
+            <button id="hostingTab" onclick="showSubmenu('hosting')" style="background-color: var(--button-background-color); color: var(--button-text-color); margin-right: 5px; border: none; padding: 5px;">
+                Hosting
+            </button>
+            <button id="integrationsTab" onclick="showSubmenu('integrations')" style="background-color: var(--button-background-color); color: var(--button-text-color); border: none; padding: 5px;">
+                Integrations
+            </button>
+        </div>
+
+        <!-- Hosting Section -->
+        <div id="hosting" style="display: block;">
             <h4 class="nobg" style="margin: 0; padding: 0;">Hosting</h4>
             <div class="row" style="margin: 0; padding: 0;">
                 <div class="col-xs-3" style="display: inline-block; float: none; margin: 0;">
@@ -33,7 +44,20 @@ const SETTINGS_DIALOG_HTML = `
                 </div>
             </div>
         </div>
+
+        <!-- Integrations Section -->
+        <div id="integrations" style="display: none;">
+            <h4 class="nobg" style="margin: 0; padding: 0;">Integrations</h4>
+            <div class="row" style="margin: 0; padding: 0;">
+                <div class="col-xs-3" style="display: inline-block; float: none; margin: 0;">
+                    <label>Integration Key</label>
+                    <input id="integrationKey" type="text" v-model="userSettings.integrationKey" placeholder="Enter your key" style="margin-right: 10px; border: 1px solid var(--border-color); background-color: var(--input-background-color); color: #fff;">
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Saved Label -->
     <div class="row" style="display: none; margin-top: 10px;" id="CoASettingsSavedLabel">
         <strong class="col-xs-12">
             Settings have been saved
@@ -49,6 +73,7 @@ const SETTINGS_BUTTON_HTML = `
 const DEFAULT_USER_SETTINGS = {
     selfHostingBoolean: false,
     pythonWebSocketUrl: 'wss://derekporcelli.com/chat-of-avabur',
+    integrationKey: '',
 };
 
 const util = {
@@ -75,7 +100,7 @@ const setPythonSocketOnMessage = (pythonSocket, browserSocket) => {
 
 let browserSocket = null;
 
-const hijackWebSocket = (pythonSocket) => {
+const hijackWebSocket = (pythonSocket, key) => {
     util.log('Hijacking WebSocket');
 
     const OriginalWebSocket = window.WebSocket;
@@ -88,12 +113,12 @@ const hijackWebSocket = (pythonSocket) => {
 
         const originalSend = socket.send;
         socket.send = function(data) {
-            pythonSocket.send(data);
+            pythonSocket.send(JSON.stringify({roa_message: data, key: key}));
             return originalSend.call(socket, data);
         };
 
         socket.addEventListener("message", (event) => {
-            pythonSocket.send(event.data);
+            pythonSocket.send(JSON.stringify({roa_message: event.data, key: key}));
         });
 
         return socket;
@@ -126,8 +151,6 @@ const saveUserSettings = (settings) => {
 
 
 const initHTML = ($, userSettings) => {
-    //GM_addStyle(COA_STYLES);
-
     util.log('Initializing HTML');
 
     var accountSettingsWrapper = $('#accountSettingsWrapper');
@@ -145,6 +168,7 @@ const initHTML = ($, userSettings) => {
 
     var selfHostingBoolean = $('#selfHostingBoolean');
     var pythonWebSocketUrl = $('#pythonWebSocketUrl');
+    var integrationKey = $('#integrationKey');
     var coaSettingsSavedLabel = $('#CoASettingsSavedLabel');
 
     selfHostingBoolean.on('change', function() {
@@ -166,6 +190,12 @@ const initHTML = ($, userSettings) => {
         coaSettingsSavedLabel.css('display', 'block').fadeOut(2000);
     });
 
+    integrationKey.on('input', function() {
+        userSettings.integrationKey = this.value;
+        saveUserSettings(userSettings);
+        coaSettingsSavedLabel.css('display', 'block').fadeOut(2000);
+    });
+
     if (userSettings.selfHostingBoolean) {
         selfHostingBoolean.prop('checked', true);
         pythonWebSocketUrl.prop('disabled', false);
@@ -174,6 +204,19 @@ const initHTML = ($, userSettings) => {
         selfHostingBoolean.prop('checked', false);
         pythonWebSocketUrl.prop('disabled', true);
     }
+
+    window.showSubmenu = function(tab) {
+        const hosting = document.getElementById('hosting');
+        const integrations = document.getElementById('integrations');
+
+        if (tab === 'hosting') {
+            hosting.style.display = 'block';
+            integrations.style.display = 'none';
+        } else if (tab === 'integrations') {
+            hosting.style.display = 'none';
+            integrations.style.display = 'block';
+        }
+    };
 }
 
 const main = async () => {
@@ -181,7 +224,7 @@ const main = async () => {
 
     let pythonSocket = initPythonWebSocket(userSettings.pythonWebSocketUrl);
     
-    hijackWebSocket(pythonSocket);
+    hijackWebSocket(pythonSocket, userSettings.integrationKey);
 
     while (browserSocket === null) {
         await util.sleep(1000);
