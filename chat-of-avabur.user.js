@@ -72,7 +72,7 @@ const SETTINGS_BUTTON_HTML = `
 
 const DEFAULT_USER_SETTINGS = {
     selfHostingBoolean: false,
-    pythonWebSocketUrl: 'wss://derekporcelli.com/chat-of-avabur',
+    pythonWebSocketUrl: 'wss://derekporcelli.com',
     integrationKey: '',
 };
 

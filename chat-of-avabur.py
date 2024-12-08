@@ -996,8 +996,8 @@ async def main():
         websocket_server = await websockets.serve(socket_server, "127.0.0.1", 8765)
         print("WebSocket server started at ws://localhost:8765")
     else:
-        websocket_server = await websockets.serve(socket_server, "0.0.0.0", 443)
-        print("WebSocket server started at wss://0.0.0.0:443")
+        websocket_server = await websockets.serve(socket_server, "0.0.0.0", 8765)
+        print("WebSocket server started at ws://0.0.0.0:8765")
 
     # Start Discord bot
     await bot.start(TOKEN)
