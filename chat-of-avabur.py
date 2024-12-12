@@ -138,6 +138,10 @@ async def generate_key(interaction: discord.Interaction):
 async def get_channel(interaction: discord.Interaction):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
     channel_name = ""
     users = load_json_file("users.json")
     for key, user in users.items():
@@ -151,6 +155,11 @@ async def get_channel(interaction: discord.Interaction):
 @bot.tree.command(name="help", description="Displays all commands")
 async def help_command(interaction: discord.Interaction):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
     help_text_0 = """
     **General Information**
     `/help` - Displays this information.
@@ -245,6 +254,10 @@ async def help_command(interaction: discord.Interaction):
 async def afk_command(interaction: discord.Interaction, reason: str = ""):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message(f"/afk {reason}", default_channel)
@@ -255,6 +268,10 @@ async def afk_command(interaction: discord.Interaction, reason: str = ""):
 @bot.tree.command(name="time", description="Displays the current server time as well as your own local time.")
 async def time_command(interaction: discord.Interaction):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -267,6 +284,11 @@ async def time_command(interaction: discord.Interaction):
 async def ref_command(interaction: discord.Interaction):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message("/ref", default_channel)
@@ -277,6 +299,11 @@ async def ref_command(interaction: discord.Interaction):
 @bot.tree.command(name="modlist", description="Displays a list of moderators currently connected to the game.")
 async def modlist_command(interaction: discord.Interaction):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -289,6 +316,11 @@ async def modlist_command(interaction: discord.Interaction):
 async def whois_command(interaction: discord.Interaction, username: str):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message(f"/whois {username}", default_channel)
@@ -299,6 +331,11 @@ async def whois_command(interaction: discord.Interaction, username: str):
 @bot.tree.command(name="online", description="Shows how many users are connected to the game.")
 async def online_command(interaction: discord.Interaction):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -311,6 +348,11 @@ async def online_command(interaction: discord.Interaction):
 async def channels_command(interaction: discord.Interaction, page: int = 1):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message(f"/channels {page}", default_channel)
@@ -321,6 +363,11 @@ async def channels_command(interaction: discord.Interaction, page: int = 1):
 @bot.tree.command(name="list", description="Displays a list of people currently listening to the specified channel.")
 async def list_command(interaction: discord.Interaction, channel: str = None):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -335,6 +382,11 @@ async def list_command(interaction: discord.Interaction, channel: str = None):
 async def tips_command(interaction: discord.Interaction, toggle: str):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message(f"/tips {toggle}", default_channel)
@@ -345,6 +397,11 @@ async def tips_command(interaction: discord.Interaction, toggle: str):
 @bot.tree.command(name="setcolor", description="Changes your personal color preference for the specified channel.")
 async def set_color(interaction: discord.Interaction, channel: str, color: str):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -357,6 +414,11 @@ async def set_color(interaction: discord.Interaction, channel: str, color: str):
 async def unset_color(interaction: discord.Interaction, channel: str):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message(f"/unsetcolor {channel}", default_channel)
@@ -368,6 +430,11 @@ async def unset_color(interaction: discord.Interaction, channel: str):
 async def quiet_mode(interaction: discord.Interaction):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message("/quiet", default_channel)
@@ -378,6 +445,11 @@ async def quiet_mode(interaction: discord.Interaction):
 @bot.tree.command(name="clear", description="Clears all messages from your chat window.")
 async def clear_chat(interaction: discord.Interaction):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -404,6 +476,11 @@ async def clear_chat(interaction: discord.Interaction):
 async def censor_mode(interaction: discord.Interaction, toggle: app_commands.Choice[str]):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message(f"/censor {toggle.value}", default_channel)
@@ -414,6 +491,11 @@ async def censor_mode(interaction: discord.Interaction, toggle: app_commands.Cho
 @bot.tree.command(name="setchan", description="Sets your active channel to the specified channel.")
 async def set_channel(interaction: discord.Interaction, channel: str):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
     channel_id = ""
     channel_name = ""
 
@@ -448,6 +530,11 @@ async def set_channel(interaction: discord.Interaction, channel: str):
 async def send_private_message(interaction: discord.Interaction, username: str, message: str):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message(f"/w {username} {message}", default_channel)
@@ -458,6 +545,11 @@ async def send_private_message(interaction: discord.Interaction, username: str, 
 @bot.tree.command(name="r", description="Sends a private message to the person who most recently whispered you.")
 async def send_private_message(interaction: discord.Interaction, message: str):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -474,6 +566,11 @@ async def send_private_message(interaction: discord.Interaction, message: str):
 async def send_action(interaction: discord.Interaction, message: str):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = json.dumps({"type": "emote", "channel": default_channel, "message": message})
@@ -484,6 +581,11 @@ async def send_action(interaction: discord.Interaction, message: str):
 @bot.tree.command(name="last", description="Displays the 100 most recent messages on the specified channel.")
 async def last_messages(interaction: discord.Interaction, channel: str = None):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -498,6 +600,11 @@ async def last_messages(interaction: discord.Interaction, channel: str = None):
 async def join_channel(interaction: discord.Interaction, channel: str = None):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     if not channel:
@@ -510,6 +617,11 @@ async def join_channel(interaction: discord.Interaction, channel: str = None):
 @bot.tree.command(name="leave", description="Leaves the specified channel, so you will no longer receive messages sent to that channel.")
 async def leave_channel(interaction: discord.Interaction, channel: str = None):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -524,6 +636,11 @@ async def leave_channel(interaction: discord.Interaction, channel: str = None):
 async def nickname_user(interaction: discord.Interaction, username: str, nickname: str):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message(f"/nickname {username} {nickname}", default_channel)
@@ -534,6 +651,11 @@ async def nickname_user(interaction: discord.Interaction, username: str, nicknam
 @bot.tree.command(name="unnickname", description="Removes the nickname you've created for the specified user.")
 async def unnickname_user(interaction: discord.Interaction, username: str):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -546,6 +668,11 @@ async def unnickname_user(interaction: discord.Interaction, username: str):
 async def nickname_list(interaction: discord.Interaction):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message("/nicknamelist", default_channel)
@@ -556,6 +683,11 @@ async def nickname_list(interaction: discord.Interaction):
 @bot.tree.command(name="ignore", description="Prevents you from seeing any messages from the specified user.")
 async def ignore_user(interaction: discord.Interaction, username: str):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -568,6 +700,11 @@ async def ignore_user(interaction: discord.Interaction, username: str):
 async def unignore_user(interaction: discord.Interaction, username: str):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = json.dumps({"type": "unignore", "target": username})
@@ -578,6 +715,11 @@ async def unignore_user(interaction: discord.Interaction, username: str):
 @bot.tree.command(name="ignorelist", description="Displays a list of people you're ignoring.")
 async def ignore_list(interaction: discord.Interaction):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -594,6 +736,11 @@ async def ignore_list(interaction: discord.Interaction):
 async def ignored_by(interaction: discord.Interaction, all: app_commands.Choice[str] = ""):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message(f"/ignoredby {all.value}", default_channel)
@@ -604,6 +751,11 @@ async def ignored_by(interaction: discord.Interaction, all: app_commands.Choice[
 @bot.tree.command(name="m", description="Sends a message to the main chat channel.")
 async def main_chat(interaction: discord.Interaction, message: str):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -616,6 +768,11 @@ async def main_chat(interaction: discord.Interaction, message: str):
 async def help_chat(interaction: discord.Interaction, message: str):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message(f"/h {message}", default_channel)
@@ -626,6 +783,11 @@ async def help_chat(interaction: discord.Interaction, message: str):
 @bot.tree.command(name="c", description="Sends a message to your clan chat channel.")
 async def clan_chat(interaction: discord.Interaction, message: str):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -638,6 +800,11 @@ async def clan_chat(interaction: discord.Interaction, message: str):
 async def trade_chat(interaction: discord.Interaction, message: str):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message(f"/t {message}", default_channel)
@@ -648,6 +815,11 @@ async def trade_chat(interaction: discord.Interaction, message: str):
 @bot.tree.command(name="a", description="Sends a message to your area chat channel.")
 async def area_chat(interaction: discord.Interaction, message: str):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -660,6 +832,11 @@ async def area_chat(interaction: discord.Interaction, message: str):
 async def clan_motd(interaction: discord.Interaction):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message("/cmotd", default_channel)
@@ -670,6 +847,11 @@ async def clan_motd(interaction: discord.Interaction):
 @bot.tree.command(name="cann", description="Makes an announcement to your clan.")
 async def clan_announcement(interaction: discord.Interaction, message: str):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -682,6 +864,11 @@ async def clan_announcement(interaction: discord.Interaction, message: str):
 async def clan_invite(interaction: discord.Interaction, username: str):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message(f"/cinvite {username}", default_channel)
@@ -692,6 +879,11 @@ async def clan_invite(interaction: discord.Interaction, username: str):
 @bot.tree.command(name="colors", description="Displays a list of named colors for use with private channels.")
 async def color_list(interaction: discord.Interaction):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -704,6 +896,11 @@ async def color_list(interaction: discord.Interaction):
 async def channel_info(interaction: discord.Interaction, channel: str):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message(f"/chaninfo {channel}", default_channel)
@@ -714,6 +911,11 @@ async def channel_info(interaction: discord.Interaction, channel: str):
 @bot.tree.command(name="create", description="Creates a new, private channel with the specified name.")
 async def create_channel(interaction: discord.Interaction, channel: str, color: str = "white", password: str = ""):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -732,6 +934,11 @@ async def create_channel(interaction: discord.Interaction, channel: str, color: 
 async def set_channel_option(interaction: discord.Interaction, channel: str, option: app_commands.Choice[str], value: str):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message(f"/chanset {channel} {option.value} {value}", default_channel)
@@ -742,6 +949,11 @@ async def set_channel_option(interaction: discord.Interaction, channel: str, opt
 @bot.tree.command(name="setcmotd", description="Sets or clears your clan's Message of the Day.")
 async def set_clan_motd(interaction: discord.Interaction, message: str = ""):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -754,6 +966,11 @@ async def set_clan_motd(interaction: discord.Interaction, message: str = ""):
 async def channel_mod(interaction: discord.Interaction, channel: str, target: str):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message(f"/chanmod {channel} {target}", default_channel)
@@ -764,6 +981,11 @@ async def channel_mod(interaction: discord.Interaction, channel: str, target: st
 @bot.tree.command(name="chanunmod", description="Revokes moderation privileges from the specified user on the specified channel.")
 async def channel_unmod(interaction: discord.Interaction, channel: str, target: str):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -776,6 +998,11 @@ async def channel_unmod(interaction: discord.Interaction, channel: str, target: 
 async def channel_ban(interaction: discord.Interaction, channel: str, target: str):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message(f"/chanban {channel} {target}", default_channel)
@@ -786,6 +1013,11 @@ async def channel_ban(interaction: discord.Interaction, channel: str, target: st
 @bot.tree.command(name="chanunban", description="Unbans the user from the channel.")
 async def channel_unban(interaction: discord.Interaction, channel: str, target: str):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -798,6 +1030,11 @@ async def channel_unban(interaction: discord.Interaction, channel: str, target: 
 async def channel_kick(interaction: discord.Interaction, channel: str, target: str):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message(f"/chankick {channel} {target}", default_channel)
@@ -809,6 +1046,11 @@ async def channel_kick(interaction: discord.Interaction, channel: str, target: s
 # async def user_profile(interaction: discord.Interaction, username: str):
 #     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
 #     message_dict = package_message(f"/profile {username}", default_channel)
 
 #     await send_to_websocket(message_dict)
@@ -817,6 +1059,11 @@ async def channel_kick(interaction: discord.Interaction, channel: str, target: s
 @bot.tree.command(name="calc", description="Calculates the expression.")
 async def calculate_expression(interaction: discord.Interaction, expression: str):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     try:
         result = eval(expression)
@@ -827,6 +1074,11 @@ async def calculate_expression(interaction: discord.Interaction, expression: str
 @bot.tree.command(name="roll", description="Simulates a dice roll on your current channel.")
 async def dice_roll(interaction: discord.Interaction, amount_d_faces_or_low: str, high: str = ""):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
@@ -839,6 +1091,11 @@ async def dice_roll(interaction: discord.Interaction, amount_d_faces_or_low: str
 async def tarot_card(interaction: discord.Interaction):
     await interaction.response.defer()
 
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
+
     websocket_client, default_channel = stage_message_variables(interaction)
 
     message_dict = package_message("/tarot", default_channel)
@@ -849,6 +1106,11 @@ async def tarot_card(interaction: discord.Interaction):
 @bot.tree.command(name="wire", description="Transfers currency from your account to the target's account.")
 async def currency_transfer(interaction: discord.Interaction, target: str, amount: str, currency: str):
     await interaction.response.defer()
+
+    if not is_interaction_in_correct_channel(interaction):
+        await interaction.followup.send("You don't have a chat set up here")
+        return
+
 
     websocket_client, default_channel = stage_message_variables(interaction)
 
