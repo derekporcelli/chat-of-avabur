@@ -136,7 +136,7 @@ async def get_channel(interaction: discord.Interaction):
             channel_name = user['id_to_chan'].get(channel_id, channel_id)
             break
 
-    await interaction.followup.send(f"Your chat is set to channel {channel_name}")
+    await interaction.followup.send(f"Your chat is set to {channel_name}")
 
 @bot.tree.command(name="help", description="Displays all commands")
 async def help_command(interaction: discord.Interaction):
