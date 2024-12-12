@@ -17,7 +17,7 @@ This is an open source project for the game **Relics of Avabur**. The goal of th
 Regardless of which installation method you choose, you must [Link RoA to Discord](#linking-roa-to-discord)
 
 ### Normal
-I have an AWS server that can host Discord Bots, but if you don't trust me, feel free to follow the instructions to self-host your Bot
+I have an AWS server that can host Discord Bots, but if you don't trust me, feel free to follow the instructions to [self-host](#self-hosted) your Bot
 #### Discord Bot
 1. Paste this URL in your server and allow everything
 ```
