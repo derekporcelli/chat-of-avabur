@@ -1183,7 +1183,7 @@ def process_message(dict_data, user):
     elif message_type == "history":
         output = "**History:**\n"
         for message in dict_data['ml']:
-            output += "\t" + process_message(message) + "\n"
+            output += "\t" + process_message(message, user) + "\n"
     elif message_type == "nicknamelist":
         output = "**Nicknames:**\n"
         for nickname, nick_value in dict_data['nicknames'].items():
