@@ -17,7 +17,8 @@ This is an open source project for the game **Relics of Avabur**. The goal of th
 Regardless of which installation method you choose, you must [Link RoA to Discord](#linking-roa-to-discord)
 
 ### Normal
-I have an AWS server that can host Discord Bots, but if you don't trust me, feel free to follow the instructions to self-host your Bot
+I have an AWS server that can host Discord Bots, but if you don't trust me, feel free to follow the instructions to [self-host](#self-hosted) your Bot
+
 #### Discord Bot
 1. Paste this URL in your server and allow everything
 ```
@@ -26,17 +27,15 @@ https://discord.com/oauth2/authorize?client_id=1309797708432932865&permissions=3
 
 #### TamperMonkey Script
 1. If you haven't, install the TamperMonkey Extension ([Chrome](https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en)) ([Firefox](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/))
-
 2. Then, [install the script](https://github.com/derekporcelli/chat-of-avabur/raw/main/chat-of-avabur.user.js)
 
+---
+
 ### Self Hosted
-
-First, clone the repository
-
-**[NOTE]** To ensure proper WebSocket connection, start the server _before_ loading **Relics of Avabur**
+**[NOTE]** To ensure proper WebSocket connection, start the server, _then_ load **Relics of Avabur**
 
 #### Discord Bot
-1. Visit [Discord Developer Portal](https://discord.com/developers/applications)
+1. Go to [Discord Developer Portal](https://discord.com/developers/applications)
 2. Click `New Application`
 3. Give it a name, agree to Discord ToS, and click `Create`
 4. Click `Bot` on the left sidebar
@@ -49,22 +48,26 @@ First, clone the repository
 11. Click the URL in the message and allow everything
 
 #### TamperMonkey Script
-See instructions in Normal Installation for TamperMonkey Script
+See instructions in [Normal Installation](#normal) for TamperMonkey Script, then come back here
 1. Log in to **Relics of Avabur**
 2. Click `Account Management > CoA`
 3. Check `Self hosting`
 
 #### Server
-Ensure you have `python3` and `pip` installed
-1. Ensure you are in the project root directory
+Ensure you have `python3`, `pip`, and `git` installed
+1. Clone the repository
+```sh
+git clone https://github.com/derekporcelli/chat-of-avabur.git
+```
+2. Ensure you are in the project root directory
 ```sh
 cd ./chat-of-avabur
 ```
-2. Install the dependencies
+3. Install the dependencies
 ```sh
 pip install -r requirements.txt
 ```
-3. Start the server
+4. Start the server
 ```sh
 python3 ./chat-of-avabur.py --self-host
 ```
