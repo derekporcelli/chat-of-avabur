@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Chat of Avabur
 // @namespace    https://github.com/derekporcelli/
-// @version      1.2.0
+// @version      1.2.1
 // @description  Two way Discord Chat integration!
 // @author       illecrop <illecrop@proton.me>
 // @match        https://*.avabur.com/game*
@@ -72,7 +72,7 @@ const SETTINGS_BUTTON_HTML = `
 
 const DEFAULT_USER_SETTINGS = {
     selfHostingBoolean: false,
-    pythonWebSocketUrl: 'wss://derekporcelli.com',
+    pythonWebSocketUrl: 'wss://avabur.derekporcelli.com/coa/',
     integrationKey: '',
 };
 
@@ -223,7 +223,7 @@ const main = async () => {
     var userSettings = loadUserSettings();
 
     let pythonSocket = initPythonWebSocket(userSettings.pythonWebSocketUrl);
-    
+
     hijackWebSocket(pythonSocket, userSettings.integrationKey);
 
     while (browserSocket === null) {
