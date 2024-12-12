@@ -454,13 +454,14 @@ async def clear_chat(interaction: discord.Interaction):
     websocket_client, default_channel = stage_message_variables(interaction)
 
     old_channel = interaction.channel
+    old_channel_id = old_channel.id
     new_channel = await interaction.channel.clone(reason="Clearing messages")
     await old_channel.delete()
     await new_channel.send("Chat cleared")
 
     users = load_json_file("users.json")
     for key, user in users.items():
-        if user['guild_id'] == interaction.guild.id and user['channel_id'] == old_channel.id:
+        if user['guild_id'] == interaction.guild.id and user['channel_id'] == old_channel_id:
             user['channel_id'] = new_channel.id
             user['default_channel'] = default_channel
     save_json_file("users.json", users)
