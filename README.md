@@ -4,11 +4,12 @@
 This is an open source project for the game **Relics of Avabur**. The goal of this project is to achieve full duplex chat integration with Discord using a Discord App or Bot. Works nicely with [Notifications of Avabur](https://github.com/davidmcclelland/notifications-of-avabur/).
 
 ## Linking RoA to Discord
+**[NOTE]** Do this in a private server or other people will be able to chat on your behalf
+
 1. Enter the following command in the channel you want to be your RoA chat interface and make a note of your key
 ```
 /gen_key
 ```
-**[NOTE]** Do this in a private server or other people will be able to chat on your behalf
 2. Click `Account Management > CoA > Integrations`
 3. Paste your key in the box and reload the page
 
