@@ -124,13 +124,19 @@ async def generate_key(interaction: discord.Interaction):
 
     await interaction.followup.send(f'Your key is:```{key}```')
 
-@bot.tree.command(name="get_chan", description="Displays the channel your chat is set to")
+@bot.tree.command(name="getchan", description="Displays the channel your chat is set to")
 async def get_channel(interaction: discord.Interaction):
     await interaction.response.defer()
 
-    websocket_client, default_channel = stage_message_variables(interaction)
+    channel_name = ""
+    users = load_json_file("users.json")
+    for key, user in users.items():
+        if user['guild_id'] == interaction.guild.id and user['channel_id'] == interaction.channel.id:
+            channel_id = user['default_channel']
+            channel_name = user['id_to_chan'].get(channel_id, channel_id)
+            break
 
-    await interaction.followup.send(f"Your chat is set to channel {default_channel}")
+    await interaction.followup.send(f"Your chat is set to channel {channel_name}")
 
 @bot.tree.command(name="help", description="Displays all commands")
 async def help_command(interaction: discord.Interaction):
@@ -215,7 +221,7 @@ async def help_command(interaction: discord.Interaction):
     help_text_5 = """
     **Discord Integration Commands**
     `/gen_key` - Generates a new key for the connection.
-    `/get_chan` - Displays the channel your chat is set to.
+    `/getchan` - Displays the channel your chat is set to.
     """
 
     await interaction.followup.send(help_text_0)
