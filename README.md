@@ -29,6 +29,8 @@ https://discord.com/oauth2/authorize?client_id=1309797708432932865&permissions=3
 
 2. Then, [install the script](https://github.com/derekporcelli/chat-of-avabur/raw/main/chat-of-avabur.user.js)
 
+---
+
 ### Self Hosted
 
 First, clone the repository
