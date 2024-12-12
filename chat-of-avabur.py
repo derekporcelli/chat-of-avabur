@@ -503,7 +503,6 @@ async def set_channel(interaction: discord.Interaction, channel: str):
 
     for key, user in users.items():
         if user['guild_id'] == interaction.guild.id and user['channel_id'] == interaction.channel.id:
-            print(user)
             id_to_chan = user['id_to_chan']
             chan_to_id = user['chan_to_id']
 
@@ -1161,7 +1160,9 @@ def process_message(dict_data, user):
         try:
             channel_id = id_to_chan[f"{dict_data['c_id']}"]
         except KeyError:
-            if 'c_id' in dict_data:
+            if 'chantag' in dict_data:
+                channel_id = dict_data['chantag']
+            elif 'c_id' in dict_data:
                 channel_id = dict_data['c_id']
         output = f"[{dict_data['ts']}] [{channel_id}] {dict_data['u']}: {dict_data['m']}"
     elif message_type == "you_are_afk":
