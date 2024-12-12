@@ -8,7 +8,7 @@ This is an open source project for the game **Relics of Avabur**. The goal of th
 ```
 /gen_key
 ```
-[NOTE] Do this in a private server or other people will be able to chat on your behalf
+**[NOTE]** Do this in a private server or other people will be able to chat on your behalf
 2. Click `Account Management > CoA > Integrations`
 3. Paste your key in the box and reload the page
 
@@ -32,7 +32,7 @@ https://discord.com/oauth2/authorize?client_id=1309797708432932865&permissions=3
 
 First, clone the repository
 
-NOTE: To ensure proper WebSocket connection, start the server _before_ loading **Relics of Avabur**
+**[NOTE]** To ensure proper WebSocket connection, start the server _before_ loading **Relics of Avabur**
 
 #### Discord Bot
 1. Visit [Discord Developer Portal](https://discord.com/developers/applications)
