@@ -122,7 +122,15 @@ async def generate_key(interaction: discord.Interaction):
     users[key] = user
     save_json_file("users.json", users)
 
-    await interaction.followup.send(f'Your key is: {key}')
+    await interaction.followup.send(f'Your key is:```{key}```')
+
+@bot.tree.command(name="get_chan", description="Displays the channel your chat is set to")
+async def get_channel(interaction: discord.Interaction):
+    await interaction.response.defer()
+
+    websocket_client, default_channel = stage_message_variables(interaction)
+
+    await interaction.followup.send(f"Your chat is set to channel {default_channel}")
 
 @bot.tree.command(name="help", description="Displays all commands")
 async def help_command(interaction: discord.Interaction):
@@ -207,6 +215,7 @@ async def help_command(interaction: discord.Interaction):
     help_text_5 = """
     **Discord Integration Commands**
     `/gen_key` - Generates a new key for the connection.
+    `/get_chan` - Displays the channel your chat is set to.
     """
 
     await interaction.followup.send(help_text_0)
@@ -809,7 +818,6 @@ async def dice_roll(interaction: discord.Interaction, amount_d_faces_or_low: str
 
     await send_to_websocket(message_dict, websocket_client)
     await interaction.followup.send("Command sent")
-
 
 @bot.tree.command(name="tarot", description="Generates a random tarot card.")
 async def tarot_card(interaction: discord.Interaction):
