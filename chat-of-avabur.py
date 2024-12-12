@@ -96,9 +96,19 @@ def stage_message_variables(interaction):
 
     return websocket_client, default_channel
 
+def is_interaction_in_correct_channel(interaction):
+    users = load_json_file("users.json")
+    for key, user in users.items():
+        if user['guild_id'] == interaction.guild.id and user['channel_id'] == interaction.channel.id:
+            return user['channel_id']
+
+    return None
+
 @bot.event
 async def on_message(message):
     if message.author.bot:
+        return
+    if not is_interaction_in_correct_channel(message):
         return
 
     websocket_client, default_channel = stage_message_variables(message)
