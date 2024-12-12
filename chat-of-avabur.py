@@ -210,7 +210,7 @@ async def help_command(interaction: discord.Interaction):
 
     help_text_4 = """
     **Miscellaneous Chat Commands**
-    `[_NOT IMPLEMENTED_] ~~/profile <username>` - Displays the specified user's profile, which contains detailed information about the user.~~
+    ~~**[NOT IMPLEMENTED]** `/profile <username>` - Displays the specified user's profile, which contains detailed information about the user.~~
     `/calc <expression>` - Calculates the expression.
     `/roll <#dTYPE>` - Simulates a dice roll on your current channel. # specifies how many dice to roll, type specifies the number of sides per die. For example: `/diceroll 2d10` will roll 2 dice with 10 sides, generating a number between 2 and 20.
     `/roll <low> <high>` - Simulates a dice roll on your current channel. Generates a random number between <low> and <high>.
